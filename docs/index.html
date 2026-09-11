@@ -1,0 +1,239 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>개발 채용 데일리</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500&family=IBM+Plex+Sans+KR:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <style>
+:root {
+  --bg: #f4efe6;
+  --bg-elev: #fffdf8;
+  --ink: #1c1915;
+  --muted: #6b645a;
+  --line: #e2d8c8;
+  --accent: #c45c26;
+  --accent-2: #1f6f64;
+  --chip: #efe6d6;
+  --chip-ink: #3f382f;
+  --be: #1f4e79;
+  --fe: #8a3d12;
+  --fs: #5b4b8a;
+  --ai: #1f6f64;
+  --pub: #7a3148;
+  --bar: #c45c26;
+  --shadow: 0 10px 30px rgba(40, 28, 12, .06);
+  --radius: 16px;
+}
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    --bg: #161410;
+    --bg-elev: #201c17;
+    --ink: #f3ece1;
+    --muted: #b3a899;
+    --line: #3a342b;
+    --accent: #e08a4f;
+    --accent-2: #6ec4b8;
+    --chip: #2b261f;
+    --chip-ink: #e8dfd2;
+    --be: #8bb8e8;
+    --fe: #e7a078;
+    --fs: #c2b3e8;
+    --ai: #8fd4c8;
+    --pub: #e39aaf;
+    --bar: #e08a4f;
+    --shadow: 0 10px 30px rgba(0, 0, 0, .28);
+  }
+}
+:root[data-theme="dark"] {
+  --bg: #161410;
+  --bg-elev: #201c17;
+  --ink: #f3ece1;
+  --muted: #b3a899;
+  --line: #3a342b;
+  --accent: #e08a4f;
+  --accent-2: #6ec4b8;
+  --chip: #2b261f;
+  --chip-ink: #e8dfd2;
+  --be: #8bb8e8;
+  --fe: #e7a078;
+  --fs: #c2b3e8;
+  --ai: #8fd4c8;
+  --pub: #e39aaf;
+  --bar: #e08a4f;
+  --shadow: 0 10px 30px rgba(0, 0, 0, .28);
+}
+* { box-sizing: border-box; }
+html, body { margin: 0; padding: 0; }
+body {
+  font-family: "IBM Plex Sans KR", sans-serif;
+  background: var(--bg);
+  color: var(--ink);
+  line-height: 1.55;
+  overflow-x: hidden;
+}
+a { color: inherit; }
+.wrap {
+  width: min(920px, calc(100% - 32px));
+  margin: 0 auto;
+  padding: 28px 0 64px;
+}
+.top {
+  display: flex;
+  justify-content: space-between;
+  gap: 12px;
+  align-items: flex-start;
+  flex-wrap: wrap;
+}
+.kicker {
+  font-family: "IBM Plex Mono", monospace;
+  font-size: 12px;
+  letter-spacing: .12em;
+  text-transform: uppercase;
+  color: var(--accent);
+  margin: 0 0 6px;
+}
+h1 { font-size: clamp(28px, 6vw, 42px); margin: 0 0 10px; letter-spacing: -.03em; }
+.sub { color: var(--muted); margin: 0 0 16px; font-size: 14px; }
+.filters { display: flex; flex-wrap: wrap; gap: 6px; margin-bottom: 14px; }
+.pill, .count {
+  display: inline-flex; align-items: center;
+  border: 1px solid var(--line);
+  background: var(--bg-elev);
+  border-radius: 999px;
+  padding: 4px 10px;
+  font-size: 12px;
+}
+.counts { display: flex; flex-wrap: wrap; gap: 8px; }
+.count b { margin-right: 4px; }
+.count.be { color: var(--be); }
+.count.fe { color: var(--fe); }
+.count.fs { color: var(--fs); }
+.count.ai { color: var(--ai); }
+.count.pub { color: var(--pub); }
+.theme-btn {
+  font-family: inherit;
+  border: 1px solid var(--line);
+  background: var(--bg-elev);
+  color: var(--ink);
+  border-radius: 999px;
+  padding: 6px 12px;
+  cursor: pointer;
+  font-size: 12px;
+}
+section { margin-top: 36px; }
+h2 {
+  font-size: 20px;
+  margin: 0 0 14px;
+  padding-bottom: 8px;
+  border-bottom: 1px solid var(--line);
+}
+.insight {
+  background: var(--bg-elev);
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+  padding: 16px 18px;
+  box-shadow: var(--shadow);
+  margin-bottom: 12px;
+}
+.insight h3 { margin: 0 0 8px; font-size: 16px; }
+.insight p { margin: 0; color: var(--muted); font-size: 14px; }
+.bars {
+  background: var(--bg-elev);
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+  padding: 16px 18px;
+  margin-top: 8px;
+}
+.bar-row {
+  display: grid;
+  grid-template-columns: minmax(88px, 108px) 1fr 28px;
+  gap: 8px;
+  align-items: center;
+  margin: 7px 0;
+}
+.bar-label, .bar-n {
+  font-family: "IBM Plex Mono", monospace;
+  font-size: 12px;
+}
+.bar-label { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.bar-n { text-align: right; color: var(--muted); }
+.bar-track {
+  height: 10px;
+  background: var(--chip);
+  border-radius: 99px;
+  overflow: hidden;
+}
+.bar-fill { height: 100%; background: var(--bar); border-radius: 99px; }
+.job {
+  background: var(--bg-elev);
+  border: 1px solid var(--line);
+  border-radius: 14px;
+  padding: 14px 16px;
+  margin: 10px 0;
+}
+.job a.title {
+  text-decoration: none;
+  font-weight: 600;
+  font-size: 16px;
+  word-break: break-word;
+  overflow-wrap: anywhere;
+}
+.job a.title:hover { color: var(--accent); }
+.meta {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px 10px;
+  margin-top: 8px;
+  color: var(--muted);
+  font-size: 13px;
+}
+.chips { display: flex; flex-wrap: wrap; gap: 6px; margin-top: 10px; }
+.chip {
+  background: var(--chip);
+  color: var(--chip-ink);
+  border-radius: 999px;
+  padding: 3px 8px;
+  font-size: 11px;
+  font-family: "IBM Plex Mono", monospace;
+  max-width: 100%;
+  overflow-wrap: anywhere;
+}
+.badge {
+  border-radius: 999px;
+  padding: 2px 8px;
+  font-size: 11px;
+  font-weight: 600;
+  border: 1px solid var(--line);
+}
+.badge.src-점핏 { color: var(--accent-2); }
+.badge.src-잡코리아 { color: var(--accent); }
+.deadline { font-family: "IBM Plex Mono", monospace; font-size: 12px; }
+.empty { color: var(--muted); font-size: 14px; }
+footer {
+  margin-top: 48px;
+  color: var(--muted);
+  font-size: 12px;
+  border-top: 1px solid var(--line);
+  padding-top: 16px;
+}
+footer a { color: var(--accent-2); }
+@media (max-width: 400px) {
+  .wrap { width: calc(100% - 24px); padding-top: 18px; }
+  .bar-row { grid-template-columns: 86px 1fr 22px; }
+  h1 { font-size: 26px; }
+}
+</style>
+</head>
+<body>
+  <div class="wrap">
+    <p class="kicker">ARCHIVE</p>
+    <h1>개발 채용 데일리</h1>
+    <p class="sub">서울·경기·인천 / 신입~3년차 아카이브</p>
+    <a class="job" href="./2026-09-11.html" style="display:block;text-decoration:none;"><div class="title">2026-09-11</div><div class="meta"><span>총 48건</span></div></a>
+    <footer><p>점핏 · 잡코리아 수집분. 원티드·프로그래머스는 차단으로 미수집.</p></footer>
+  </div>
+</body>
+</html>
