@@ -220,6 +220,49 @@ footer {
   padding-top: 16px;
 }
 footer a { color: var(--accent-2); }
+
+.heat {
+  background: var(--bg-elev);
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+  padding: 16px 18px;
+  margin-top: 12px;
+}
+.heat h3 { margin: 0 0 6px; font-size: 15px; }
+.heat-note { margin: 0 0 12px; color: var(--muted); font-size: 12px; }
+.heat-table {
+  display: grid;
+  grid-template-columns: minmax(68px, 84px) repeat(4, minmax(0, 1fr));
+  gap: 4px;
+  width: 100%;
+}
+.heat-hd, .heat-lab, .heat-cell {
+  font-family: "IBM Plex Mono", monospace;
+  font-size: 11px;
+}
+.heat-hd { color: var(--muted); text-align: center; padding-bottom: 4px; font-weight: 500; }
+.heat-hd:first-child, .heat-lab { text-align: left; }
+.heat-lab {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  align-self: center;
+}
+.heat-cell {
+  min-height: 34px;
+  border-radius: 8px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: 500;
+}
+.heat-cell.is-zero { color: var(--muted); background: var(--chip); }
+@media (max-width: 400px) {
+  .heat { padding: 12px; }
+  .heat-table { grid-template-columns: 62px repeat(4, minmax(0, 1fr)); gap: 3px; }
+  .heat-hd, .heat-lab, .heat-cell { font-size: 10px; }
+  .heat-cell { min-height: 30px; border-radius: 6px; }
+}
 @media (max-width: 400px) {
   .wrap { width: calc(100% - 24px); padding-top: 18px; }
   .bar-row { grid-template-columns: 86px 1fr 22px; }
@@ -277,6 +320,13 @@ footer a { color: var(--accent-2); }
 <div class="bar-row"><span class="bar-label">HTML</span><div class="bar-track"><div class="bar-fill" style="width:40%"></div></div><span class="bar-n">6</span></div>
 <div class="bar-row"><span class="bar-label">CSS</span><div class="bar-track"><div class="bar-fill" style="width:40%"></div></div><span class="bar-n">6</span></div>
 
+      </div>
+      <div class="heat">
+        <h3>스택 × 직무 히트맵</h3>
+        <p class="heat-note">직무 공고에서 해당 스택이 한 번 이상 언급된 건수. 공채 제외.</p>
+        <div class="heat-table" role="table" aria-label="스택 직무 히트맵">
+          <div class="heat-hd"></div><div class="heat-hd">백엔드</div><div class="heat-hd">프론트</div><div class="heat-hd">풀스택</div><div class="heat-hd">AI</div><div class="heat-lab">Java</div><div class="heat-cell" style="background:color-mix(in srgb,var(--accent) 61%,var(--chip));color:var(--ink)" title="Java · 백엔드 5건">5</div><div class="heat-cell" style="background:color-mix(in srgb,var(--accent) 30%,var(--chip));color:var(--ink)" title="Java · 프론트 1건">1</div><div class="heat-cell" style="background:color-mix(in srgb,var(--accent) 45%,var(--chip));color:var(--ink)" title="Java · 풀스택 3건">3</div><div class="heat-cell" style="background:color-mix(in srgb,var(--accent) 30%,var(--chip));color:var(--ink)" title="Java · AI 1건">1</div><div class="heat-lab">Spring</div><div class="heat-cell" style="background:color-mix(in srgb,var(--accent) 53%,var(--chip));color:var(--ink)" title="Spring · 백엔드 4건">4</div><div class="heat-cell is-zero" title="Spring · 프론트 0건">0</div><div class="heat-cell is-zero" title="Spring · 풀스택 0건">0</div><div class="heat-cell is-zero" title="Spring · AI 0건">0</div><div class="heat-lab">Node.js</div><div class="heat-cell" style="background:color-mix(in srgb,var(--accent) 61%,var(--chip));color:var(--ink)" title="Node.js · 백엔드 5건">5</div><div class="heat-cell is-zero" title="Node.js · 프론트 0건">0</div><div class="heat-cell is-zero" title="Node.js · 풀스택 0건">0</div><div class="heat-cell is-zero" title="Node.js · AI 0건">0</div><div class="heat-lab">Python</div><div class="heat-cell" style="background:color-mix(in srgb,var(--accent) 45%,var(--chip));color:var(--ink)" title="Python · 백엔드 3건">3</div><div class="heat-cell is-zero" title="Python · 프론트 0건">0</div><div class="heat-cell" style="background:color-mix(in srgb,var(--accent) 38%,var(--chip));color:var(--ink)" title="Python · 풀스택 2건">2</div><div class="heat-cell" style="background:color-mix(in srgb,var(--accent) 100%,var(--chip));color:var(--ink)" title="Python · AI 10건">10</div><div class="heat-lab">PyTorch</div><div class="heat-cell" style="background:color-mix(in srgb,var(--accent) 30%,var(--chip));color:var(--ink)" title="PyTorch · 백엔드 1건">1</div><div class="heat-cell is-zero" title="PyTorch · 프론트 0건">0</div><div class="heat-cell is-zero" title="PyTorch · 풀스택 0건">0</div><div class="heat-cell" style="background:color-mix(in srgb,var(--accent) 69%,var(--chip));color:var(--ink)" title="PyTorch · AI 6건">6</div><div class="heat-lab">React</div><div class="heat-cell is-zero" title="React · 백엔드 0건">0</div><div class="heat-cell" style="background:color-mix(in srgb,var(--accent) 77%,var(--chip));color:var(--ink)" title="React · 프론트 7건">7</div><div class="heat-cell" style="background:color-mix(in srgb,var(--accent) 45%,var(--chip));color:var(--ink)" title="React · 풀스택 3건">3</div><div class="heat-cell is-zero" title="React · AI 0건">0</div><div class="heat-lab">TypeScript</div><div class="heat-cell" style="background:color-mix(in srgb,var(--accent) 38%,var(--chip));color:var(--ink)" title="TypeScript · 백엔드 2건">2</div><div class="heat-cell" style="background:color-mix(in srgb,var(--accent) 53%,var(--chip));color:var(--ink)" title="TypeScript · 프론트 4건">4</div><div class="heat-cell" style="background:color-mix(in srgb,var(--accent) 30%,var(--chip));color:var(--ink)" title="TypeScript · 풀스택 1건">1</div><div class="heat-cell is-zero" title="TypeScript · AI 0건">0</div><div class="heat-lab">JavaScript</div><div class="heat-cell" style="background:color-mix(in srgb,var(--accent) 45%,var(--chip));color:var(--ink)" title="JavaScript · 백엔드 3건">3</div><div class="heat-cell" style="background:color-mix(in srgb,var(--accent) 53%,var(--chip));color:var(--ink)" title="JavaScript · 프론트 4건">4</div><div class="heat-cell" style="background:color-mix(in srgb,var(--accent) 38%,var(--chip));color:var(--ink)" title="JavaScript · 풀스택 2건">2</div><div class="heat-cell is-zero" title="JavaScript · AI 0건">0</div><div class="heat-lab">Vue</div><div class="heat-cell is-zero" title="Vue · 백엔드 0건">0</div><div class="heat-cell" style="background:color-mix(in srgb,var(--accent) 38%,var(--chip));color:var(--ink)" title="Vue · 프론트 2건">2</div><div class="heat-cell" style="background:color-mix(in srgb,var(--accent) 30%,var(--chip));color:var(--ink)" title="Vue · 풀스택 1건">1</div><div class="heat-cell is-zero" title="Vue · AI 0건">0</div><div class="heat-lab">MySQL</div><div class="heat-cell" style="background:color-mix(in srgb,var(--accent) 69%,var(--chip));color:var(--ink)" title="MySQL · 백엔드 6건">6</div><div class="heat-cell is-zero" title="MySQL · 프론트 0건">0</div><div class="heat-cell is-zero" title="MySQL · 풀스택 0건">0</div><div class="heat-cell is-zero" title="MySQL · AI 0건">0</div><div class="heat-lab">AWS</div><div class="heat-cell" style="background:color-mix(in srgb,var(--accent) 53%,var(--chip));color:var(--ink)" title="AWS · 백엔드 4건">4</div><div class="heat-cell is-zero" title="AWS · 프론트 0건">0</div><div class="heat-cell is-zero" title="AWS · 풀스택 0건">0</div><div class="heat-cell is-zero" title="AWS · AI 0건">0</div><div class="heat-lab">C++</div><div class="heat-cell" style="background:color-mix(in srgb,var(--accent) 38%,var(--chip));color:var(--ink)" title="C++ · 백엔드 2건">2</div><div class="heat-cell is-zero" title="C++ · 프론트 0건">0</div><div class="heat-cell is-zero" title="C++ · 풀스택 0건">0</div><div class="heat-cell" style="background:color-mix(in srgb,var(--accent) 61%,var(--chip));color:var(--ink)" title="C++ · AI 5건">5</div>
+        </div>
       </div>
     </section>
     <section><h2>백엔드 · 서버 (16)</h2>
