@@ -1,0 +1,961 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>개발 채용 데일리</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500&family=IBM+Plex+Sans+KR:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <style>
+
+:root {
+  --bg: #f4efe6;
+  --bg-elev: #fffdf8;
+  --ink: #1c1915;
+  --muted: #6b645a;
+  --line: #e2d8c8;
+  --accent: #c45c26;
+  --accent-2: #1f6f64;
+  --chip: #efe6d6;
+  --chip-ink: #3f382f;
+  --be: #1f4e79;
+  --fe: #8a3d12;
+  --fs: #5b4b8a;
+  --ai: #1f6f64;
+  --pub: #7a3148;
+  --bar: #c45c26;
+  --shadow: 0 10px 30px rgba(40, 28, 12, .06);
+  --radius: 16px;
+}
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    --bg: #161410;
+    --bg-elev: #201c17;
+    --ink: #f3ece1;
+    --muted: #b3a899;
+    --line: #3a342b;
+    --accent: #e08a4f;
+    --accent-2: #6ec4b8;
+    --chip: #2b261f;
+    --chip-ink: #e8dfd2;
+    --be: #8bb8e8;
+    --fe: #e7a078;
+    --fs: #c2b3e8;
+    --ai: #8fd4c8;
+    --pub: #e39aaf;
+    --bar: #e08a4f;
+    --shadow: 0 10px 30px rgba(0, 0, 0, .28);
+  }
+}
+:root[data-theme="dark"] {
+  --bg: #161410;
+  --bg-elev: #201c17;
+  --ink: #f3ece1;
+  --muted: #b3a899;
+  --line: #3a342b;
+  --accent: #e08a4f;
+  --accent-2: #6ec4b8;
+  --chip: #2b261f;
+  --chip-ink: #e8dfd2;
+  --be: #8bb8e8;
+  --fe: #e7a078;
+  --fs: #c2b3e8;
+  --ai: #8fd4c8;
+  --pub: #e39aaf;
+  --bar: #e08a4f;
+  --shadow: 0 10px 30px rgba(0, 0, 0, .28);
+}
+* { box-sizing: border-box; }
+html, body { margin: 0; padding: 0; }
+body {
+  font-family: "IBM Plex Sans KR", sans-serif;
+  background: var(--bg);
+  color: var(--ink);
+  line-height: 1.55;
+  overflow-x: hidden;
+}
+a { color: inherit; }
+.wrap {
+  width: min(920px, calc(100% - 32px));
+  margin: 0 auto;
+  padding: 28px 0 64px;
+}
+.top {
+  display: flex;
+  justify-content: space-between;
+  gap: 12px;
+  align-items: flex-start;
+  flex-wrap: wrap;
+}
+.kicker {
+  font-family: "IBM Plex Mono", monospace;
+  font-size: 12px;
+  letter-spacing: .12em;
+  text-transform: uppercase;
+  color: var(--accent);
+  margin: 0 0 6px;
+}
+h1 { font-size: clamp(28px, 6vw, 42px); margin: 0 0 10px; letter-spacing: -.03em; }
+.sub { color: var(--muted); margin: 0 0 16px; font-size: 14px; }
+.filters { display: flex; flex-wrap: wrap; gap: 6px; margin-bottom: 14px; }
+.pill, .count {
+  display: inline-flex; align-items: center;
+  border: 1px solid var(--line);
+  background: var(--bg-elev);
+  border-radius: 999px;
+  padding: 4px 10px;
+  font-size: 12px;
+}
+.counts { display: flex; flex-wrap: wrap; gap: 8px; }
+.count b { margin-right: 4px; }
+.count.be { color: var(--be); }
+.count.fe { color: var(--fe); }
+.count.fs { color: var(--fs); }
+.count.ai { color: var(--ai); }
+.count.pub { color: var(--pub); }
+.theme-btn {
+  font-family: inherit;
+  border: 1px solid var(--line);
+  background: var(--bg-elev);
+  color: var(--ink);
+  border-radius: 999px;
+  padding: 6px 12px;
+  cursor: pointer;
+  font-size: 12px;
+}
+section { margin-top: 36px; }
+h2 {
+  font-size: 20px;
+  margin: 0 0 14px;
+  padding-bottom: 8px;
+  border-bottom: 1px solid var(--line);
+}
+.insight {
+  background: var(--bg-elev);
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+  padding: 16px 18px;
+  box-shadow: var(--shadow);
+  margin-bottom: 12px;
+}
+.insight h3 { margin: 0 0 8px; font-size: 16px; }
+.insight p { margin: 0; color: var(--muted); font-size: 14px; }
+.bars {
+  background: var(--bg-elev);
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+  padding: 16px 18px;
+  margin-top: 8px;
+}
+.bar-row {
+  display: grid;
+  grid-template-columns: minmax(88px, 108px) 1fr 28px;
+  gap: 8px;
+  align-items: center;
+  margin: 7px 0;
+}
+.bar-label, .bar-n {
+  font-family: "IBM Plex Mono", monospace;
+  font-size: 12px;
+}
+.bar-label { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.bar-n { text-align: right; color: var(--muted); }
+.bar-track {
+  height: 10px;
+  background: var(--chip);
+  border-radius: 99px;
+  overflow: hidden;
+}
+.bar-fill { height: 100%; background: var(--bar); border-radius: 99px; }
+.job {
+  background: var(--bg-elev);
+  border: 1px solid var(--line);
+  border-radius: 14px;
+  padding: 14px 16px;
+  margin: 10px 0;
+}
+.job a.title {
+  text-decoration: none;
+  font-weight: 600;
+  font-size: 16px;
+  word-break: break-word;
+  overflow-wrap: anywhere;
+}
+.job a.title:hover { color: var(--accent); }
+.meta {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px 10px;
+  margin-top: 8px;
+  color: var(--muted);
+  font-size: 13px;
+}
+.chips { display: flex; flex-wrap: wrap; gap: 6px; margin-top: 10px; }
+.chip {
+  background: var(--chip);
+  color: var(--chip-ink);
+  border-radius: 999px;
+  padding: 3px 8px;
+  font-size: 11px;
+  font-family: "IBM Plex Mono", monospace;
+  max-width: 100%;
+  overflow-wrap: anywhere;
+}
+.badge {
+  border-radius: 999px;
+  padding: 2px 8px;
+  font-size: 11px;
+  font-weight: 600;
+  border: 1px solid var(--line);
+}
+.badge.src-점핏 { color: var(--accent-2); }
+.badge.src-잡코리아 { color: var(--accent); }
+.deadline { font-family: "IBM Plex Mono", monospace; font-size: 12px; }
+.empty { color: var(--muted); font-size: 14px; }
+footer {
+  margin-top: 48px;
+  color: var(--muted);
+  font-size: 12px;
+  border-top: 1px solid var(--line);
+  padding-top: 16px;
+}
+footer a { color: var(--accent-2); }
+
+.heat {
+  background: var(--bg-elev);
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+  padding: 16px 18px;
+  margin-top: 12px;
+}
+.heat h3 { margin: 0 0 6px; font-size: 15px; }
+.heat-note { margin: 0 0 12px; color: var(--muted); font-size: 12px; }
+.heat-table {
+  display: grid;
+  grid-template-columns: minmax(68px, 84px) repeat(4, minmax(0, 1fr));
+  gap: 4px;
+  width: 100%;
+}
+.heat-hd, .heat-lab, .heat-cell {
+  font-family: "IBM Plex Mono", monospace;
+  font-size: 11px;
+}
+.heat-hd { color: var(--muted); text-align: center; padding-bottom: 4px; font-weight: 500; }
+.heat-hd:first-child, .heat-lab { text-align: left; }
+.heat-lab {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  align-self: center;
+}
+.heat-cell {
+  min-height: 34px;
+  border-radius: 8px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: 500;
+}
+.heat-cell.is-zero { color: var(--muted); background: var(--chip); }
+@media (max-width: 400px) {
+  .heat { padding: 12px; }
+  .heat-table { grid-template-columns: 62px repeat(4, minmax(0, 1fr)); gap: 3px; }
+  .heat-hd, .heat-lab, .heat-cell { font-size: 10px; }
+  .heat-cell { min-height: 30px; border-radius: 6px; }
+}
+@media (max-width: 400px) {
+  .wrap { width: calc(100% - 24px); padding-top: 18px; }
+  .bar-row { grid-template-columns: 86px 1fr 22px; }
+  h1 { font-size: 26px; }
+}
+
+  </style>
+</head>
+<body>
+  <div class="wrap">
+    <header>
+      <div class="top">
+        <div>
+          <p class="kicker">DEV JOBS DAILY</p>
+          <h1>2026년 10월 31일 (토)</h1>
+          <p class="sub">서울 · 경기 · 인천 / 신입~3년차 · 백엔드·프론트·웹풀스택·AI/ML·클라우드/인프라</p>
+        </div>
+        <button class="theme-btn" type="button" onclick="document.documentElement.dataset.theme=document.documentElement.dataset.theme==='dark'?'light':'dark'">테마</button>
+      </div>
+      <div class="filters">
+        <span class="pill">지역 수도권</span>
+        <span class="pill">경력 신입~3년</span>
+        <span class="pill">회사당 1~2건</span>
+      </div>
+      <div class="counts">
+        <span class="count"><b>61</b>건</span>
+        <span class="count be"><b>20</b>백엔드</span>
+        <span class="count fe"><b>12</b>프론트</span>
+        <span class="count fs"><b>16</b>풀스택</span>
+        <span class="count ai"><b>9</b>AI</span>
+        <span class="count pub"><b>4</b>공채</span>
+      </div>
+    </header>
+
+    <section>
+      <h2>오늘의 채용 인사이트</h2>
+      <div class="insight"><h3>점핏 3페이지는 이지케어텍·위드네트웍스·인젠트가 빠지고, 블루개러지·수퍼빈·데이터드리븐이 들어왔다</h3><p>10-30 리포트가 없어 직전 수집분(10-29)과 비교한다. 점핏 최근 등록순 3페이지에서 이지케어텍 MLOps+AI Engineer 2건(중구, 최소 2년), 위드네트웍스 보안 솔루션 신입+경력 2건(강서), 에이아이콴텍 로보어드바이저(영등포, 최소 3년), 인젠트 iBiz Java(영등포, 최소 3년), 에너자이 ML(강남, 최소 1년)이 목록 밖으로 밀려났다. 대신 베스텔라랩 백엔드·인프라 풀스택(안양, 최소 2년, Spring·React), 놀다교육연구소 백엔드+프론트 2건(구리, 최소 1년, Node.js), 블루개러지 LLM Engineer+프론트 2건(강동, 최소 3년/2년, PyTorch·React), 데이터드리븐 풀스택(관악, 최소 3년, Django·React), 수퍼빈 AI 엔지니어(성남, 최소 3년, PyTorch)가 들어왔다. 잡코리아에서는 ~10-30 마감이던 브이씨 프론트·서로티엔에스 풀스택·인포플라 풀스택이 빠졌고, 날리지포인트 JAVA(성남, 최소 2년), 리비바이오 Node 백엔드(강남), 넥스트씨아이코리아(과천), 당근마켓 프론트(서초), 대한몰 이커머스 풀스택 신입(오산), 랩투마켓 Node 풀스택(고양), 비오앰 AI Native 풀스택(강남), 서큘러스 Physical AI+Edge 인프라 2건(금천), 이한크리에이티브 VLM/LLM(과천)이 1페이지에 걸렸다. 교육생·부문별·건설 분야별 공개채용은 제외했다.</p></div><div class="insight"><h3>백엔드는 16건에서 20건이고, Java/Spring과 Node.js가 각 9건으로 같아졌다</h3><p>백엔드는 직전 16건에서 20건이다. 점핏은 인젠트가 빠지고 놀다교육연구소가 들어와 1건으로 같고, 잡코리아는 날리지포인트·리비바이오·넥스트씨아이코리아·서큘러스 Edge 인프라가 더해져 15건에서 19건이다. Java 또는 Spring이 칩에 있는 백엔드는 9건(날리지포인트·오픈서베이·제타럭스 시스템·플레이웍스·디자인 펀치·로동·에스티오·키키코드·팀이지)으로 직전 8건에서 늘었다. Node.js(또는 NestJS·Express)는 9건(리비바이오·플레이웍스·노빌더·놀다교육연구소·에스티오·웨이온·키키코드·티엔에이치·팀이지)으로 직전 6건에서 늘었다. 둘 다 적힌 곳은 4곳(플레이웍스·에스티오·키키코드·팀이지)이다. 금천 SI(디자인 펀치·로동)와 성남 날리지포인트·제타럭스는 Java 쪽, 리비바이오·노빌더·웨이온·티엔에이치·놀다는 Node 쪽이다.</p></div><div class="insight"><h3>AI 전담은 9건으로 같고, 웹에 AI를 붙인 자리는 6건이다</h3><p>AI·머신러닝 섹션은 직전과 같이 9건이다. 점핏 에너자이 ML과 이지케어텍 2건, 잡코리아 레피나 신입이 빠지고 블루개러지 LLM(강동, 최소 3년), 수퍼빈 AI(성남, 최소 3년), 서큘러스 Physical AI(금천 신입), 이한크리에이티브 VLM/LLM(과천)이 들어왔다. 유지분은 딥오토·제논·지엠디소프트·몽구스에이아이·에이치디씨랩스다. 웹 제목이나 직무에 AI가 붙은 부착형은 6건으로 같다. 플레이웍스 백엔드·프론트, 엘세븐시큐리티, 무월소프트, 인슈넷에프씨에 비오앰 AI Native 풀스택이 붙었고 인포플라는 마감으로 빠졌다. 넥슨 AI본부 프론트 인턴과 당근마켓 프론트는 포지션이 웹이라 부착으로 세지 않았다.</p></div><div class="insight"><h3>신입 단독은 14건으로 같고, 점핏 무경력은 0건이다</h3><p>경력 칸이 신입만 적힌 직무 공고는 직전과 같이 14건이다. 디지타이드·오픈서베이·티엔에이치·넥슨·북틀·가온지능정보·퍼펙토리·제논·팀이지에 당근마켓, 대한몰, 인슈넷에프씨, 서큘러스 2건이 더해졌고 위드네트웍스 솔루션 신입과 레피나가 빠졌다. 점핏 무경력은 직전 위드네트웍스 1건에서 0건이다. 경력 무관을 제목에 적은 자리는 없고, 대기업 공채는 4건이다. KB캐피탈(~10-30)이 빠지고 LG CNS 자회사 비즈테크아이 하반기 신입 인턴이 들어왔으며 농심·아이센스·펜타시스템테크놀러지는 유지다.</p></div><div class="insight"><h3>강남·서초·송파는 18건으로 같고, 성남·판교는 7건에서 9건이다</h3><p>직무 공고 기준 강남·서초·송파는 직전과 같이 18건이다. 브이씨·에너자이·인포플라가 빠지고 리비바이오·당근마켓·비오앰이 들어왔다. 성남·판교(분당 포함)는 날리지포인트 JAVA와 수퍼빈 AI가 들어와 직전 7건에서 9건이다. 금천·구로는 서큘러스 2건이 붙어 직전 8건에서 10건이다. 과천은 볼타온 2건에 넥스트씨아이코리아·이한크리에이티브가 더해져 4건이다. 영등포는 인젠트·에이아이콴텍이 빠져 인슈넷에프씨·다락트러스트·무월소프트 3건이다. 마포는 북틀 1건, 중구는 이지케어텍이 빠져 0건이다. 강동 블루개러지 2건, 구리 놀다교육연구소 2건, 관악 데이터드리븐, 안양 베스텔라랩이 있다.</p></div><div class="insight"><h3>오늘 마감은 플레이웍스·웨이온이고, 월요일에 펜타시스템·화요일에 퍼펙토리가 있다</h3><p>가장 가까운 직무 마감은 오늘(~10-31) 플레이웍스 백엔드·프론트 2건과 웨이온 백엔드다. 이어서 펜타시스템테크놀러지(~11-02), 퍼펙토리(~11-03)다. 공채는 펜타시스템테크놀러지(~11-02), 농심(~11-09), 아이센스(~11-11), 비즈테크아이(~11-15) 순이다. 당근마켓 프론트와 딜라이트홀딩스 CMS 백엔드는 ~11-13, 지엠디소프트 AI는 ~11-09까지다.</p></div>
+      <div class="bars">
+        <h3 style="margin:0 0 10px;font-size:15px;">기술 스택 언급 빈도</h3>
+<div class="bar-row"><span class="bar-label">React</span><div class="bar-track"><div class="bar-fill" style="width:100%"></div></div><span class="bar-n">20</span></div>
+<div class="bar-row"><span class="bar-label">Node.js</span><div class="bar-track"><div class="bar-fill" style="width:85%"></div></div><span class="bar-n">17</span></div>
+<div class="bar-row"><span class="bar-label">Java</span><div class="bar-track"><div class="bar-fill" style="width:80%"></div></div><span class="bar-n">16</span></div>
+<div class="bar-row"><span class="bar-label">TypeScript</span><div class="bar-track"><div class="bar-fill" style="width:75%"></div></div><span class="bar-n">15</span></div>
+<div class="bar-row"><span class="bar-label">JavaScript</span><div class="bar-track"><div class="bar-fill" style="width:70%"></div></div><span class="bar-n">14</span></div>
+<div class="bar-row"><span class="bar-label">Python</span><div class="bar-track"><div class="bar-fill" style="width:70%"></div></div><span class="bar-n">14</span></div>
+<div class="bar-row"><span class="bar-label">Git</span><div class="bar-track"><div class="bar-fill" style="width:65%"></div></div><span class="bar-n">13</span></div>
+<div class="bar-row"><span class="bar-label">SQL</span><div class="bar-track"><div class="bar-fill" style="width:60%"></div></div><span class="bar-n">12</span></div>
+<div class="bar-row"><span class="bar-label">AWS</span><div class="bar-track"><div class="bar-fill" style="width:60%"></div></div><span class="bar-n">12</span></div>
+<div class="bar-row"><span class="bar-label">PostgreSQL</span><div class="bar-track"><div class="bar-fill" style="width:60%"></div></div><span class="bar-n">12</span></div>
+<div class="bar-row"><span class="bar-label">MySQL</span><div class="bar-track"><div class="bar-fill" style="width:55%"></div></div><span class="bar-n">11</span></div>
+<div class="bar-row"><span class="bar-label">Docker</span><div class="bar-track"><div class="bar-fill" style="width:45%"></div></div><span class="bar-n">9</span></div>
+      </div>
+      <div class="heat">
+        <h3>스택 × 직무 히트맵</h3>
+        <p class="heat-note">직무 공고에서 해당 스택이 한 번 이상 언급된 건수. 공채 제외.</p>
+        <div class="heat-table" role="table" aria-label="스택 직무 히트맵">
+          <div class="heat-hd"></div><div class="heat-hd">백엔드</div><div class="heat-hd">프론트</div><div class="heat-hd">풀스택</div><div class="heat-hd">AI</div><div class="heat-lab">Java</div><div class="heat-cell" style="background:color-mix(in srgb,var(--accent) 92%,var(--chip));color:var(--ink)" title="Java · 백엔드 9건">9</div><div class="heat-cell" style="background:color-mix(in srgb,var(--accent) 30%,var(--chip));color:var(--ink)" title="Java · 프론트 1건">1</div><div class="heat-cell" style="background:color-mix(in srgb,var(--accent) 69%,var(--chip));color:var(--ink)" title="Java · 풀스택 6건">6</div><div class="heat-cell is-zero" title="Java · AI 0건">0</div><div class="heat-lab">Spring</div><div class="heat-cell" style="background:color-mix(in srgb,var(--accent) 53%,var(--chip));color:var(--ink)" title="Spring · 백엔드 4건">4</div><div class="heat-cell is-zero" title="Spring · 프론트 0건">0</div><div class="heat-cell" style="background:color-mix(in srgb,var(--accent) 53%,var(--chip));color:var(--ink)" title="Spring · 풀스택 4건">4</div><div class="heat-cell is-zero" title="Spring · AI 0건">0</div><div class="heat-lab">Node.js</div><div class="heat-cell" style="background:color-mix(in srgb,var(--accent) 92%,var(--chip));color:var(--ink)" title="Node.js · 백엔드 9건">9</div><div class="heat-cell" style="background:color-mix(in srgb,var(--accent) 38%,var(--chip));color:var(--ink)" title="Node.js · 프론트 2건">2</div><div class="heat-cell" style="background:color-mix(in srgb,var(--accent) 69%,var(--chip));color:var(--ink)" title="Node.js · 풀스택 6건">6</div><div class="heat-cell is-zero" title="Node.js · AI 0건">0</div><div class="heat-lab">Python</div><div class="heat-cell" style="background:color-mix(in srgb,var(--accent) 45%,var(--chip));color:var(--ink)" title="Python · 백엔드 3건">3</div><div class="heat-cell" style="background:color-mix(in srgb,var(--accent) 30%,var(--chip));color:var(--ink)" title="Python · 프론트 1건">1</div><div class="heat-cell" style="background:color-mix(in srgb,var(--accent) 53%,var(--chip));color:var(--ink)" title="Python · 풀스택 4건">4</div><div class="heat-cell" style="background:color-mix(in srgb,var(--accent) 69%,var(--chip));color:var(--ink)" title="Python · AI 6건">6</div><div class="heat-lab">PyTorch</div><div class="heat-cell is-zero" title="PyTorch · 백엔드 0건">0</div><div class="heat-cell is-zero" title="PyTorch · 프론트 0건">0</div><div class="heat-cell is-zero" title="PyTorch · 풀스택 0건">0</div><div class="heat-cell" style="background:color-mix(in srgb,var(--accent) 61%,var(--chip));color:var(--ink)" title="PyTorch · AI 5건">5</div><div class="heat-lab">React</div><div class="heat-cell" style="background:color-mix(in srgb,var(--accent) 38%,var(--chip));color:var(--ink)" title="React · 백엔드 2건">2</div><div class="heat-cell" style="background:color-mix(in srgb,var(--accent) 100%,var(--chip));color:var(--ink)" title="React · 프론트 10건">10</div><div class="heat-cell" style="background:color-mix(in srgb,var(--accent) 84%,var(--chip));color:var(--ink)" title="React · 풀스택 8건">8</div><div class="heat-cell is-zero" title="React · AI 0건">0</div><div class="heat-lab">TypeScript</div><div class="heat-cell" style="background:color-mix(in srgb,var(--accent) 38%,var(--chip));color:var(--ink)" title="TypeScript · 백엔드 2건">2</div><div class="heat-cell" style="background:color-mix(in srgb,var(--accent) 77%,var(--chip));color:var(--ink)" title="TypeScript · 프론트 7건">7</div><div class="heat-cell" style="background:color-mix(in srgb,var(--accent) 69%,var(--chip));color:var(--ink)" title="TypeScript · 풀스택 6건">6</div><div class="heat-cell is-zero" title="TypeScript · AI 0건">0</div><div class="heat-lab">JavaScript</div><div class="heat-cell" style="background:color-mix(in srgb,var(--accent) 53%,var(--chip));color:var(--ink)" title="JavaScript · 백엔드 4건">4</div><div class="heat-cell" style="background:color-mix(in srgb,var(--accent) 92%,var(--chip));color:var(--ink)" title="JavaScript · 프론트 9건">9</div><div class="heat-cell" style="background:color-mix(in srgb,var(--accent) 30%,var(--chip));color:var(--ink)" title="JavaScript · 풀스택 1건">1</div><div class="heat-cell is-zero" title="JavaScript · AI 0건">0</div><div class="heat-lab">Vue</div><div class="heat-cell is-zero" title="Vue · 백엔드 0건">0</div><div class="heat-cell" style="background:color-mix(in srgb,var(--accent) 53%,var(--chip));color:var(--ink)" title="Vue · 프론트 4건">4</div><div class="heat-cell" style="background:color-mix(in srgb,var(--accent) 38%,var(--chip));color:var(--ink)" title="Vue · 풀스택 2건">2</div><div class="heat-cell is-zero" title="Vue · AI 0건">0</div><div class="heat-lab">MySQL</div><div class="heat-cell" style="background:color-mix(in srgb,var(--accent) 69%,var(--chip));color:var(--ink)" title="MySQL · 백엔드 6건">6</div><div class="heat-cell is-zero" title="MySQL · 프론트 0건">0</div><div class="heat-cell" style="background:color-mix(in srgb,var(--accent) 61%,var(--chip));color:var(--ink)" title="MySQL · 풀스택 5건">5</div><div class="heat-cell is-zero" title="MySQL · AI 0건">0</div><div class="heat-lab">AWS</div><div class="heat-cell" style="background:color-mix(in srgb,var(--accent) 69%,var(--chip));color:var(--ink)" title="AWS · 백엔드 6건">6</div><div class="heat-cell is-zero" title="AWS · 프론트 0건">0</div><div class="heat-cell" style="background:color-mix(in srgb,var(--accent) 69%,var(--chip));color:var(--ink)" title="AWS · 풀스택 6건">6</div><div class="heat-cell is-zero" title="AWS · AI 0건">0</div><div class="heat-lab">C++</div><div class="heat-cell" style="background:color-mix(in srgb,var(--accent) 30%,var(--chip));color:var(--ink)" title="C++ · 백엔드 1건">1</div><div class="heat-cell is-zero" title="C++ · 프론트 0건">0</div><div class="heat-cell" style="background:color-mix(in srgb,var(--accent) 30%,var(--chip));color:var(--ink)" title="C++ · 풀스택 1건">1</div><div class="heat-cell is-zero" title="C++ · AI 0건">0</div>
+        </div>
+      </div>
+
+    </section>
+    <section><h2>백엔드 · 서버 (20)</h2>
+<article class="job">
+  <a class="title" href="https://www.jobkorea.co.kr/Recruit/GI_Read/50097054" target="_blank" rel="noopener">[분당] Backend 서비스 개발자 모집 (JAVA)</a>
+  <div class="meta">
+    <span>㈜날리지포인트</span>
+    <span>경기 성남시</span>
+    <span class="badge">신입·2년</span>
+    <span class="badge src-잡코리아">잡코리아</span>
+    <span class="deadline">~ 2026-11-30</span>
+  </div>
+  <div class="chips"><span class="chip">Spring Boot</span><span class="chip">Spring MVC</span><span class="chip">JavaScript</span><span class="chip">Spring</span><span class="chip">SQL</span><span class="chip">Java</span></div>
+</article><article class="job">
+  <a class="title" href="https://www.jobkorea.co.kr/Recruit/GI_Read/50083835" target="_blank" rel="noopener">[NEXTCI] Backend Engineer - 주니어 백엔드 엔지니어 채용합니다</a>
+  <div class="meta">
+    <span>유한회사 넥스트씨아이코리아</span>
+    <span>경기 과천시</span>
+    <span class="badge">신입·경력</span>
+    <span class="badge src-잡코리아">잡코리아</span>
+    <span class="deadline">~ 2026-11-29</span>
+  </div>
+  <div class="chips"><span class="chip">RDBMS</span><span class="chip">Kubernetes</span><span class="chip">MongoDB</span><span class="chip">CI</span><span class="chip">SQL</span></div>
+</article><article class="job">
+  <a class="title" href="https://www.jobkorea.co.kr/Recruit/GI_Read/49907655" target="_blank" rel="noopener">모바일 앱 백엔드 개발자 (Node.js / NestJS / AWS)</a>
+  <div class="meta">
+    <span>노빌더</span>
+    <span>서울 서초구</span>
+    <span class="badge">신입·경력</span>
+    <span class="badge src-잡코리아">잡코리아</span>
+    
+  </div>
+  <div class="chips"><span class="chip">MySQL</span><span class="chip">PostgreSQL</span><span class="chip">AWS</span><span class="chip">JWT</span><span class="chip">Node.js</span><span class="chip">NestJS</span></div>
+</article><article class="job">
+  <a class="title" href="https://jumpit.saramin.co.kr/position/55441792" target="_blank" rel="noopener">백엔드 엔지니어</a>
+  <div class="meta">
+    <span>놀다교육연구소</span>
+    <span>경기 구리시</span>
+    <span class="badge">1년</span>
+    <span class="badge src-점핏">점핏</span>
+    <span class="deadline">~ 2026-11-28</span>
+  </div>
+  <div class="chips"><span class="chip">Node.js</span><span class="chip">AWS</span><span class="chip">AI/인공지능</span></div>
+</article><article class="job">
+  <a class="title" href="https://www.jobkorea.co.kr/Recruit/GI_Read/49959305" target="_blank" rel="noopener">[(주)디자인펀치] 백엔드 개발자 경력자 채용</a>
+  <div class="meta">
+    <span>디자인 펀치</span>
+    <span>서울 금천구</span>
+    <span class="badge">신입·2년</span>
+    <span class="badge src-잡코리아">잡코리아</span>
+    
+  </div>
+  <div class="chips"><span class="chip">MySQL</span><span class="chip">Java</span><span class="chip">JSP</span><span class="chip">PHP</span></div>
+</article><article class="job">
+  <a class="title" href="https://www.jobkorea.co.kr/Recruit/GI_Read/50044449" target="_blank" rel="noopener">디지타이드㈜ 서버/백엔드 개발자 신입 채용</a>
+  <div class="meta">
+    <span>디지타이드㈜</span>
+    <span>서울 종로구</span>
+    <span class="badge">신입</span>
+    <span class="badge src-잡코리아">잡코리아</span>
+    
+  </div>
+  <div class="chips"><span class="chip">C</span><span class="chip">C++</span><span class="chip">Linux</span></div>
+</article><article class="job">
+  <a class="title" href="https://www.jobkorea.co.kr/Recruit/GI_Read/50169888" target="_blank" rel="noopener">2026 [다이슨 에이전시] 백엔드 개발자 (CMS 콘텐츠 운영)</a>
+  <div class="meta">
+    <span>㈜딜라이트홀딩스</span>
+    <span>서울 중랑구</span>
+    <span class="badge">신입·경력</span>
+    <span class="badge src-잡코리아">잡코리아</span>
+    <span class="deadline">~ 2026-11-13</span>
+  </div>
+  <div class="chips"><span class="chip">AWS</span><span class="chip">PHP</span></div>
+</article><article class="job">
+  <a class="title" href="https://www.jobkorea.co.kr/Recruit/GI_Read/50034185" target="_blank" rel="noopener">[가산] 백앤드 개발자 (신입/경력) 채용</a>
+  <div class="meta">
+    <span>로동</span>
+    <span>서울 금천구</span>
+    <span class="badge">신입·3년</span>
+    <span class="badge src-잡코리아">잡코리아</span>
+    
+  </div>
+  <div class="chips"><span class="chip">Spring</span><span class="chip">Java</span></div>
+</article><article class="job">
+  <a class="title" href="https://www.jobkorea.co.kr/Recruit/GI_Read/50208540" target="_blank" rel="noopener">[리비바이오] 백엔드개발자 (Node.js)</a>
+  <div class="meta">
+    <span>㈜리비바이오</span>
+    <span>서울 강남구</span>
+    <span class="badge">신입·1년</span>
+    <span class="badge src-잡코리아">잡코리아</span>
+    <span class="deadline">~ 2026-12-19</span>
+  </div>
+  <div class="chips"><span class="chip">MySQL</span><span class="chip">PostgreSQL</span><span class="chip">Node.js</span></div>
+</article><article class="job">
+  <a class="title" href="https://www.jobkorea.co.kr/Recruit/GI_Read/50206860" target="_blank" rel="noopener">백엔드 개발자 채용공고</a>
+  <div class="meta">
+    <span>㈜볼타온</span>
+    <span>경기 과천시</span>
+    <span class="badge">신입·3년</span>
+    <span class="badge src-잡코리아">잡코리아</span>
+    <span class="deadline">~ 2026-11-19</span>
+  </div>
+  <div class="chips"><span class="chip">MySQL</span><span class="chip">PostgreSQL</span><span class="chip">GitHub</span><span class="chip">Docker</span><span class="chip">Git</span><span class="chip">CI</span><span class="chip">Python</span></div>
+</article><article class="job">
+  <a class="title" href="https://www.jobkorea.co.kr/Recruit/GI_Read/50220863" target="_blank" rel="noopener">Edge AI 인프라 및 성능 테스트 엔지니어 채용(AI교육 사업 수료자 대상)</a>
+  <div class="meta">
+    <span>서큘러스</span>
+    <span>서울 금천구</span>
+    <span class="badge">신입</span>
+    <span class="badge src-잡코리아">잡코리아</span>
+    <span class="deadline">~ 2026-11-21</span>
+  </div>
+  
+</article><article class="job">
+  <a class="title" href="https://www.jobkorea.co.kr/Recruit/GI_Read/50241063" target="_blank" rel="noopener">B2B 트레이딩 플랫폼 백엔드 개발자 파트너를 찾습니다 :)</a>
+  <div class="meta">
+    <span>씨너지파트너㈜</span>
+    <span>서울 송파구</span>
+    <span class="badge">신입·경력</span>
+    <span class="badge src-잡코리아">잡코리아</span>
+    <span class="deadline">~ 2026-12-25</span>
+  </div>
+  <div class="chips"><span class="chip">.NET</span><span class="chip">Jira</span><span class="chip">ORM</span><span class="chip">PostgreSQL</span><span class="chip">JavaScript</span><span class="chip">Git</span><span class="chip">HTML</span><span class="chip">C#</span><span class="chip">ASP.NET</span><span class="chip">MSSQL</span></div>
+</article><article class="job">
+  <a class="title" href="https://www.jobkorea.co.kr/Recruit/GI_Read/49927252" target="_blank" rel="noopener">[STO Chain] 백엔드 개발자 / 소프트웨어 엔지니어 (신입·경력)</a>
+  <div class="meta">
+    <span>에스티오(STO)</span>
+    <span>서울 금천구 외 13</span>
+    <span class="badge">신입·경력</span>
+    <span class="badge src-잡코리아">잡코리아</span>
+    
+  </div>
+  <div class="chips"><span class="chip">Spring</span><span class="chip">Python</span><span class="chip">Node.js</span><span class="chip">SQL</span><span class="chip">Java</span></div>
+</article><article class="job">
+  <a class="title" href="https://www.jobkorea.co.kr/Recruit/GI_Read/50232251" target="_blank" rel="noopener">백엔드 엔지니어(신입)</a>
+  <div class="meta">
+    <span>㈜오픈서베이</span>
+    <span>서울 강남구</span>
+    <span class="badge">신입</span>
+    <span class="badge src-잡코리아">잡코리아</span>
+    <span class="deadline">~ 2026-12-22</span>
+  </div>
+  <div class="chips"><span class="chip">HTTP</span><span class="chip">Git</span><span class="chip">AWS</span><span class="chip">Kotlin</span><span class="chip">SQL</span><span class="chip">Java</span></div>
+</article><article class="job">
+  <a class="title" href="https://www.jobkorea.co.kr/Recruit/GI_Read/50090362" target="_blank" rel="noopener">[WAION] 서비스 기획부터 함께하는 백엔드 개발자 (Product Engineer)</a>
+  <div class="meta">
+    <span>웨이온㈜</span>
+    <span>서울 금천구</span>
+    <span class="badge">신입·경력</span>
+    <span class="badge src-잡코리아">잡코리아</span>
+    <span class="deadline">~ 2026-10-31</span>
+  </div>
+  <div class="chips"><span class="chip">MySQL</span><span class="chip">React</span><span class="chip">Next.js</span><span class="chip">PostgreSQL</span><span class="chip">JavaScript</span><span class="chip">Docker</span><span class="chip">Git</span><span class="chip">Express</span><span class="chip">AWS</span><span class="chip">TypeScript</span><span class="chip">Node.js</span><span class="chip">NestJS</span></div>
+</article><article class="job">
+  <a class="title" href="https://www.jobkorea.co.kr/Recruit/GI_Read/50114251" target="_blank" rel="noopener">Java/Spring 백엔드 개발자 채용(신입/경력)</a>
+  <div class="meta">
+    <span>㈜제타럭스 시스템</span>
+    <span>경기 성남시</span>
+    <span class="badge">신입·3년</span>
+    <span class="badge src-잡코리아">잡코리아</span>
+    
+  </div>
+  <div class="chips"><span class="chip">RDBMS</span><span class="chip">PostgreSQL</span><span class="chip">Spring</span><span class="chip">SQL</span><span class="chip">Java</span></div>
+</article><article class="job">
+  <a class="title" href="https://www.jobkorea.co.kr/Recruit/GI_Read/50040504" target="_blank" rel="noopener">신입 백엔드 개발자 채용</a>
+  <div class="meta">
+    <span>키키코드㈜</span>
+    <span>경기 성남시</span>
+    <span class="badge">신입·1년</span>
+    <span class="badge src-잡코리아">잡코리아</span>
+    <span class="deadline">~ 2026-11-20</span>
+  </div>
+  <div class="chips"><span class="chip">RDBMS</span><span class="chip">Next.js</span><span class="chip">HTTP</span><span class="chip">Git</span><span class="chip">Kotlin</span><span class="chip">REST API</span><span class="chip">Python</span><span class="chip">Node.js</span><span class="chip">Java</span></div>
+</article><article class="job">
+  <a class="title" href="https://www.jobkorea.co.kr/Recruit/GI_Read/50231890" target="_blank" rel="noopener">함께 고민하고 성장하는 신입 백엔드 개발자(Node.js)를 기다립니다</a>
+  <div class="meta">
+    <span>티엔에이치㈜</span>
+    <span>경기 성남시</span>
+    <span class="badge">신입</span>
+    <span class="badge src-잡코리아">잡코리아</span>
+    
+  </div>
+  <div class="chips"><span class="chip">RDBMS</span><span class="chip">Jira</span><span class="chip">JavaScript</span><span class="chip">Git</span><span class="chip">TypeScript</span><span class="chip">Node.js</span><span class="chip">SQL</span></div>
+</article><article class="job">
+  <a class="title" href="https://www.jobkorea.co.kr/Recruit/GI_Read/50238331" target="_blank" rel="noopener">백엔드 개발자</a>
+  <div class="meta">
+    <span>팀이지㈜</span>
+    <span>서울 금천구</span>
+    <span class="badge">신입</span>
+    <span class="badge src-잡코리아">잡코리아</span>
+    <span class="deadline">~ 2026-11-25</span>
+  </div>
+  <div class="chips"><span class="chip">React</span><span class="chip">API</span><span class="chip">GitHub</span><span class="chip">Docker</span><span class="chip">Git</span><span class="chip">AWS</span><span class="chip">REST API</span><span class="chip">Node.js</span><span class="chip">Java</span></div>
+</article><article class="job">
+  <a class="title" href="https://www.jobkorea.co.kr/Recruit/GI_Read/50090018" target="_blank" rel="noopener">AI 및 라이브 기반 반려동물 양육 플랫폼  백엔드 개발자 채용</a>
+  <div class="meta">
+    <span>㈜플레이웍스</span>
+    <span>서울 강남구</span>
+    <span class="badge">신입·3년</span>
+    <span class="badge src-잡코리아">잡코리아</span>
+    <span class="deadline">~ 2026-10-31</span>
+  </div>
+  <div class="chips"><span class="chip">REST API</span><span class="chip">MySQL</span><span class="chip">JPA</span><span class="chip">MyBatis</span><span class="chip">Node.js</span><span class="chip">Git</span><span class="chip">MariaDB</span><span class="chip">NoSQL</span><span class="chip">MSA</span><span class="chip">SQL</span><span class="chip">Java</span></div>
+</article>
+</section>
+    <section><h2>프론트엔드 (12)</h2>
+<article class="job">
+  <a class="title" href="https://www.jobkorea.co.kr/Recruit/GI_Read/50192916" target="_blank" rel="noopener">[AI본부] 웹 프론트엔드 엔지니어 (인턴)</a>
+  <div class="meta">
+    <span>㈜넥슨</span>
+    <span>경기 성남시</span>
+    <span class="badge">신입</span>
+    <span class="badge src-잡코리아">잡코리아</span>
+    
+  </div>
+  <div class="chips"><span class="chip">React</span><span class="chip">JavaScript</span><span class="chip">HTML5</span><span class="chip">TypeScript</span><span class="chip">CSS3</span></div>
+</article><article class="job">
+  <a class="title" href="https://www.jobkorea.co.kr/Recruit/GI_Read/49907639" target="_blank" rel="noopener">모바일 앱 프론트엔드 개발자 채용 (React, TypeScript)</a>
+  <div class="meta">
+    <span>노빌더</span>
+    <span>서울 서초구</span>
+    <span class="badge">신입·경력</span>
+    <span class="badge src-잡코리아">잡코리아</span>
+    
+  </div>
+  <div class="chips"><span class="chip">React</span><span class="chip">TypeScript</span></div>
+</article><article class="job">
+  <a class="title" href="https://jumpit.saramin.co.kr/position/55441822" target="_blank" rel="noopener">프론트 엔지니어</a>
+  <div class="meta">
+    <span>놀다교육연구소</span>
+    <span>경기 구리시</span>
+    <span class="badge">1년</span>
+    <span class="badge src-점핏">점핏</span>
+    <span class="deadline">~ 2026-11-28</span>
+  </div>
+  <div class="chips"><span class="chip">HTML5</span><span class="chip">JavaScript</span></div>
+</article><article class="job">
+  <a class="title" href="https://www.jobkorea.co.kr/Recruit/GI_Read/50264458" target="_blank" rel="noopener">[산업기능요원 집중 채용 캠페인] Software Engineer, Frontend</a>
+  <div class="meta">
+    <span>㈜당근마켓</span>
+    <span>서울 서초구</span>
+    <span class="badge">신입</span>
+    <span class="badge src-잡코리아">잡코리아</span>
+    <span class="deadline">~ 2026-11-13</span>
+  </div>
+  <div class="chips"><span class="chip">React</span><span class="chip">JavaScript</span><span class="chip">TypeScript</span></div>
+</article><article class="job">
+  <a class="title" href="https://www.jobkorea.co.kr/Recruit/GI_Read/50256453" target="_blank" rel="noopener">UX/UI 디자인 및 웹 프론트엔드 개발자 모집</a>
+  <div class="meta">
+    <span>㈜디로그</span>
+    <span>서울 금천구</span>
+    <span class="badge">신입·1년</span>
+    <span class="badge src-잡코리아">잡코리아</span>
+    <span class="deadline">~ 2026-11-30</span>
+  </div>
+  <div class="chips"><span class="chip">React</span><span class="chip">JavaScript</span><span class="chip">Vue.js</span><span class="chip">HTML</span><span class="chip">CSS</span></div>
+</article><article class="job">
+  <a class="title" href="https://www.jobkorea.co.kr/Recruit/GI_Read/50034198" target="_blank" rel="noopener">[가산] 프론트 개발자(신입/경력) 채용</a>
+  <div class="meta">
+    <span>로동</span>
+    <span>서울 금천구</span>
+    <span class="badge">신입·3년</span>
+    <span class="badge src-잡코리아">잡코리아</span>
+    
+  </div>
+  <div class="chips"><span class="chip">React</span><span class="chip">Next.js</span></div>
+</article><article class="job">
+  <a class="title" href="https://www.jobkorea.co.kr/Recruit/GI_Read/50208298" target="_blank" rel="noopener">볼타온 프론트엔드 개발자 채용공고</a>
+  <div class="meta">
+    <span>㈜볼타온</span>
+    <span>경기 과천시</span>
+    <span class="badge">신입·3년</span>
+    <span class="badge src-잡코리아">잡코리아</span>
+    <span class="deadline">~ 2026-11-19</span>
+  </div>
+  <div class="chips"><span class="chip">Vue</span><span class="chip">React</span><span class="chip">GitHub</span><span class="chip">CSS</span><span class="chip">Next.js</span><span class="chip">JavaScript</span><span class="chip">Docker</span><span class="chip">Git</span><span class="chip">HTML</span><span class="chip">TypeScript</span><span class="chip">WebRTC</span><span class="chip">WebSocket</span><span class="chip">Node.js</span><span class="chip">Nuxt.js</span></div>
+</article><article class="job">
+  <a class="title" href="https://www.jobkorea.co.kr/Recruit/GI_Read/50210544" target="_blank" rel="noopener">(신입-3년) 주니어 프론트 앤드 개발자 채용</a>
+  <div class="meta">
+    <span>㈜북틀</span>
+    <span>서울 마포구</span>
+    <span class="badge">신입</span>
+    <span class="badge src-잡코리아">잡코리아</span>
+    <span class="deadline">~ 2026-11-20</span>
+  </div>
+  <div class="chips"><span class="chip">CSS</span><span class="chip">Node.js</span><span class="chip">JavaScript</span><span class="chip">HTML5</span><span class="chip">Jenkins</span><span class="chip">React</span></div>
+</article><article class="job">
+  <a class="title" href="https://jumpit.saramin.co.kr/position/55439025" target="_blank" rel="noopener">프론트엔드 개발자(2~4년)</a>
+  <div class="meta">
+    <span>블루개러지</span>
+    <span>서울 강동구</span>
+    <span class="badge">2년</span>
+    <span class="badge src-점핏">점핏</span>
+    <span class="deadline">~ 2026-11-28</span>
+  </div>
+  <div class="chips"><span class="chip">GraphQL</span><span class="chip">Python</span><span class="chip">React</span><span class="chip">React Native</span><span class="chip">TypeScript</span></div>
+</article><article class="job">
+  <a class="title" href="https://www.jobkorea.co.kr/Recruit/GI_Read/50236860" target="_blank" rel="noopener">(신입/경력) 프론트엔드개발자 채용(정규직/프리랜서)</a>
+  <div class="meta">
+    <span>㈜에이블짐정보</span>
+    <span>서울 송파구</span>
+    <span class="badge">신입·경력</span>
+    <span class="badge src-잡코리아">잡코리아</span>
+    <span class="deadline">~ 2026-11-25</span>
+  </div>
+  <div class="chips"><span class="chip">JavaScript</span><span class="chip">JSP</span><span class="chip">Java</span></div>
+</article><article class="job">
+  <a class="title" href="https://www.jobkorea.co.kr/Recruit/GI_Read/50091744" target="_blank" rel="noopener">[티피씨/LIKEY] 웹 프론트엔드 개발자 (신입·주니어) 채용</a>
+  <div class="meta">
+    <span>㈜티피씨</span>
+    <span>서울 강남구</span>
+    <span class="badge">신입·1년</span>
+    <span class="badge src-잡코리아">잡코리아</span>
+    <span class="deadline">~ 2026-11-30</span>
+  </div>
+  <div class="chips"><span class="chip">Vue</span><span class="chip">REST API</span><span class="chip">React</span><span class="chip">JavaScript</span><span class="chip">Vue.js</span><span class="chip">HTTP</span><span class="chip">HTML</span><span class="chip">TypeScript</span><span class="chip">CSS</span></div>
+</article><article class="job">
+  <a class="title" href="https://www.jobkorea.co.kr/Recruit/GI_Read/50090006" target="_blank" rel="noopener">AI 및 라이브 기반 반려동물 양육 플랫폼  프론트엔드 개발자 채용</a>
+  <div class="meta">
+    <span>㈜플레이웍스</span>
+    <span>서울 강남구</span>
+    <span class="badge">신입·2년</span>
+    <span class="badge src-잡코리아">잡코리아</span>
+    <span class="deadline">~ 2026-10-31</span>
+  </div>
+  <div class="chips"><span class="chip">Vue</span><span class="chip">React</span><span class="chip">JavaScript</span><span class="chip">Figma</span><span class="chip">TypeScript</span><span class="chip">CSS</span></div>
+</article>
+</section>
+    <section><h2>풀스택 (16)</h2>
+<article class="job">
+  <a class="title" href="https://www.jobkorea.co.kr/Recruit/GI_Read/50177096" target="_blank" rel="noopener">S/W 개발자모집(Java, SQL, 프론트앤드, 백앤드/신입)</a>
+  <div class="meta">
+    <span>㈜가온지능정보</span>
+    <span>서울 동대문구 외 5</span>
+    <span class="badge">신입</span>
+    <span class="badge src-잡코리아">잡코리아</span>
+    <span class="deadline">~ 2026-11-14</span>
+  </div>
+  <div class="chips"><span class="chip">API</span><span class="chip">JSP</span><span class="chip">Oracle</span><span class="chip">dbms</span><span class="chip">SQL</span><span class="chip">Java</span></div>
+</article><article class="job">
+  <a class="title" href="https://www.jobkorea.co.kr/Recruit/GI_Read/50167226" target="_blank" rel="noopener">자동차 비교견적 서비스 프론트엔드&amp;백엔드 개발자 채용</a>
+  <div class="meta">
+    <span>㈜너드소프트</span>
+    <span>서울 송파구</span>
+    <span class="badge">신입·1년</span>
+    <span class="badge src-잡코리아">잡코리아</span>
+    <span class="deadline">~ 2026-11-13</span>
+  </div>
+  <div class="chips"><span class="chip">HTML</span><span class="chip">C#</span><span class="chip">MSSQL</span><span class="chip">ASP.NET</span><span class="chip">Nuxt.js</span><span class="chip">CSS</span></div>
+</article><article class="job">
+  <a class="title" href="https://www.jobkorea.co.kr/Recruit/GI_Read/50223126" target="_blank" rel="noopener">백엔드 자바 프론트앤드 개발자 Message Service (경력 0년 이상)</a>
+  <div class="meta">
+    <span>다락트러스트㈜</span>
+    <span>서울 영등포구 외 2</span>
+    <span class="badge">신입·5년</span>
+    <span class="badge src-잡코리아">잡코리아</span>
+    <span class="deadline">~ 2026-12-21</span>
+  </div>
+  <div class="chips"><span class="chip">Java</span></div>
+</article><article class="job">
+  <a class="title" href="https://www.jobkorea.co.kr/Recruit/GI_Read/50213224" target="_blank" rel="noopener">[이커머스 풀스택 개발/세마역] 온라인 쇼핑몰 시스템 개발자 신입 모집</a>
+  <div class="meta">
+    <span>㈜대한몰</span>
+    <span>경기 오산시 외 5</span>
+    <span class="badge">신입</span>
+    <span class="badge src-잡코리아">잡코리아</span>
+    <span class="deadline">~ 2026-11-20</span>
+  </div>
+  <div class="chips"><span class="chip">Python</span></div>
+</article><article class="job">
+  <a class="title" href="https://jumpit.saramin.co.kr/position/55361658" target="_blank" rel="noopener">풀스택 제품 개발자(3년 이상)</a>
+  <div class="meta">
+    <span>데이터드리븐</span>
+    <span>서울 관악구</span>
+    <span class="badge">3년</span>
+    <span class="badge src-점핏">점핏</span>
+    <span class="deadline">~ 2026-11-21</span>
+  </div>
+  <div class="chips"><span class="chip">Django</span><span class="chip">Docker</span><span class="chip">Kubernetes</span><span class="chip">PostgreSQL</span><span class="chip">React</span><span class="chip">Redis</span><span class="chip">TypeScript</span><span class="chip">SQL</span></div>
+</article><article class="job">
+  <a class="title" href="https://www.jobkorea.co.kr/Recruit/GI_Read/50188631" target="_blank" rel="noopener">풀스택 로봇 관리 플랫폼 개발자 모집 (nodejs, 전문연구요원 가능)</a>
+  <div class="meta">
+    <span>㈜랩투마켓</span>
+    <span>경기 고양시</span>
+    <span class="badge">신입·경력</span>
+    <span class="badge src-잡코리아">잡코리아</span>
+    <span class="deadline">~ 2026-11-15</span>
+  </div>
+  <div class="chips"><span class="chip">Prisma</span><span class="chip">Node.js</span><span class="chip">Angular</span><span class="chip">PostgreSQL</span><span class="chip">ros</span><span class="chip">mqtt</span><span class="chip">TypeScript</span><span class="chip">NestJS</span></div>
+</article><article class="job">
+  <a class="title" href="https://www.jobkorea.co.kr/Recruit/GI_Read/50225356" target="_blank" rel="noopener">[무월소프트] AI 버튜버 시스템·웹 풀스택 개발자 (신입·경력)</a>
+  <div class="meta">
+    <span>무월소프트</span>
+    <span>서울 영등포구</span>
+    <span class="badge">신입·경력</span>
+    <span class="badge src-잡코리아">잡코리아</span>
+    <span class="deadline">~ 2026-11-21</span>
+  </div>
+  <div class="chips"><span class="chip">React</span><span class="chip">Redis</span><span class="chip">PostgreSQL</span><span class="chip">JavaScript</span><span class="chip">Docker</span><span class="chip">Git</span><span class="chip">AWS</span><span class="chip">TypeScript</span><span class="chip">C#</span><span class="chip">Python</span><span class="chip">SQL</span></div>
+</article><article class="job">
+  <a class="title" href="https://jumpit.saramin.co.kr/position/55437830" target="_blank" rel="noopener">백엔드·인프라 풀스택 엔지니어</a>
+  <div class="meta">
+    <span>베스텔라랩</span>
+    <span>경기 안양시</span>
+    <span class="badge">2년</span>
+    <span class="badge src-점핏">점핏</span>
+    <span class="deadline">~ 2026-11-29</span>
+  </div>
+  <div class="chips"><span class="chip">Angular</span><span class="chip">Git</span><span class="chip">React</span><span class="chip">Spring Boot</span><span class="chip">Vue.js</span><span class="chip">REST API</span><span class="chip">AWS</span><span class="chip">NoSQL</span><span class="chip">SQL</span><span class="chip">Network</span></div>
+</article><article class="job">
+  <a class="title" href="https://www.jobkorea.co.kr/Recruit/GI_Read/50275870" target="_blank" rel="noopener">AI Native / 바이브 코딩 기반 풀스택 개발자</a>
+  <div class="meta">
+    <span>㈜비오앰</span>
+    <span>서울 강남구</span>
+    <span class="badge">신입·3년</span>
+    <span class="badge src-잡코리아">잡코리아</span>
+    
+  </div>
+  
+</article><article class="job">
+  <a class="title" href="https://www.jobkorea.co.kr/Recruit/GI_Read/50212208" target="_blank" rel="noopener">[서울소프트(가산)] 풀스택 개발자 (신입/경력)</a>
+  <div class="meta">
+    <span>㈜서울소프트</span>
+    <span>서울 금천구</span>
+    <span class="badge">신입·경력</span>
+    <span class="badge src-잡코리아">잡코리아</span>
+    <span class="deadline">~ 2026-12-20</span>
+  </div>
+  <div class="chips"><span class="chip">MySQL</span><span class="chip">Git</span><span class="chip">Node.js</span><span class="chip">Python</span><span class="chip">Java</span></div>
+</article><article class="job">
+  <a class="title" href="https://www.jobkorea.co.kr/Recruit/GI_Read/50213993" target="_blank" rel="noopener">(주)에이치씨엔씨 풀스택 소프트웨어 엔지니어 채용</a>
+  <div class="meta">
+    <span>㈜에이치씨엔씨</span>
+    <span>경기 성남시</span>
+    <span class="badge">신입·3년</span>
+    <span class="badge src-잡코리아">잡코리아</span>
+    <span class="deadline">~ 2026-12-20</span>
+  </div>
+  <div class="chips"><span class="chip">Vue</span><span class="chip">RDBMS</span><span class="chip">Next.js</span><span class="chip">React</span><span class="chip">NestJS</span><span class="chip">Django</span><span class="chip">AWS</span><span class="chip">Spring</span><span class="chip">Node.js</span><span class="chip">Python</span><span class="chip">NoSQL</span><span class="chip">CI</span><span class="chip">Java</span></div>
+</article><article class="job">
+  <a class="title" href="https://www.jobkorea.co.kr/Recruit/GI_Read/50074808" target="_blank" rel="noopener">AI·보안 솔루션 웹 풀스택 개발자 채용 (React·Django) 신입/경력</a>
+  <div class="meta">
+    <span>㈜엘세븐시큐리티</span>
+    <span>서울 송파구</span>
+    <span class="badge">신입·3년</span>
+    <span class="badge src-잡코리아">잡코리아</span>
+    <span class="deadline">~ 2026-11-28</span>
+  </div>
+  <div class="chips"><span class="chip">MySQL</span><span class="chip">C</span><span class="chip">React</span><span class="chip">C++</span><span class="chip">GitHub</span><span class="chip">Django</span><span class="chip">TypeScript</span><span class="chip">MariaDB</span></div>
+</article><article class="job">
+  <a class="title" href="https://www.jobkorea.co.kr/Recruit/GI_Read/50258729" target="_blank" rel="noopener">[Throw] AI 서비스 개발·운영 신입 개발자 채용 공고</a>
+  <div class="meta">
+    <span>㈜인슈넷에프씨</span>
+    <span>서울 영등포구</span>
+    <span class="badge">신입</span>
+    <span class="badge src-잡코리아">잡코리아</span>
+    <span class="deadline">~ 2026-11-27</span>
+  </div>
+  <div class="chips"><span class="chip">MySQL</span><span class="chip">React</span><span class="chip">Docker</span><span class="chip">Git</span><span class="chip">AWS</span><span class="chip">Node.js</span></div>
+</article><article class="job">
+  <a class="title" href="https://www.jobkorea.co.kr/Recruit/GI_Read/50109568" target="_blank" rel="noopener">[공짱] 풀스택 개발자</a>
+  <div class="meta">
+    <span>㈜퍼펙토리</span>
+    <span>경기 화성시</span>
+    <span class="badge">신입</span>
+    <span class="badge src-잡코리아">잡코리아</span>
+    <span class="deadline">~ 2026-11-03</span>
+  </div>
+  <div class="chips"><span class="chip">erp</span><span class="chip">mes</span></div>
+</article><article class="job">
+  <a class="title" href="https://www.jobkorea.co.kr/Recruit/GI_Read/49978899" target="_blank" rel="noopener">[풀링포레스트] ERP 풀스택개발자 신입/경력직 채용</a>
+  <div class="meta">
+    <span>㈜풀링포레스트</span>
+    <span>서울 강남구</span>
+    <span class="badge">신입·경력</span>
+    <span class="badge src-잡코리아">잡코리아</span>
+    <span class="deadline">~ 2026-11-11</span>
+  </div>
+  <div class="chips"><span class="chip">React</span><span class="chip">AWS</span><span class="chip">MySQL</span><span class="chip">erp</span><span class="chip">Next.js</span><span class="chip">Node.js</span><span class="chip">PostgreSQL</span><span class="chip">Kubernetes</span><span class="chip">Docker</span><span class="chip">TypeScript</span><span class="chip">Spring</span><span class="chip">Java</span></div>
+</article><article class="job">
+  <a class="title" href="https://www.jobkorea.co.kr/Recruit/GI_Read/50056553" target="_blank" rel="noopener">[풀링포레스트] 풀스택개발자 신입/경력직 채용</a>
+  <div class="meta">
+    <span>㈜풀링포레스트</span>
+    <span>서울 강남구</span>
+    <span class="badge">신입·경력</span>
+    <span class="badge src-잡코리아">잡코리아</span>
+    <span class="deadline">~ 2026-11-27</span>
+  </div>
+  <div class="chips"><span class="chip">React</span><span class="chip">AWS</span><span class="chip">MySQL</span><span class="chip">erp</span><span class="chip">Next.js</span><span class="chip">Node.js</span><span class="chip">PostgreSQL</span><span class="chip">Kubernetes</span><span class="chip">Docker</span><span class="chip">TypeScript</span><span class="chip">Spring</span><span class="chip">Java</span></div>
+</article>
+</section>
+    <section><h2>AI · 머신러닝 (9)</h2>
+<article class="job">
+  <a class="title" href="https://www.jobkorea.co.kr/Recruit/GI_Read/50046413" target="_blank" rel="noopener">[신입/경력] AI Engineer</a>
+  <div class="meta">
+    <span>㈜딥오토</span>
+    <span>서울 강남구 외 14</span>
+    <span class="badge">신입·1년</span>
+    <span class="badge src-잡코리아">잡코리아</span>
+    
+  </div>
+  <div class="chips"><span class="chip">PyTorch</span><span class="chip">Python</span></div>
+</article><article class="job">
+  <a class="title" href="https://www.jobkorea.co.kr/Recruit/GI_Read/50214022" target="_blank" rel="noopener">[AI Engineer] MongooseAI에서 함께 성장할 동료를 구합니다</a>
+  <div class="meta">
+    <span>몽구스에이아이㈜</span>
+    <span>경기 성남시</span>
+    <span class="badge">신입·경력</span>
+    <span class="badge src-잡코리아">잡코리아</span>
+    <span class="deadline">~ 2026-11-30</span>
+  </div>
+  <div class="chips"><span class="chip">PyTorch</span><span class="chip">RNN</span><span class="chip">CNN</span><span class="chip">TensorFlow</span><span class="chip">Python</span></div>
+</article><article class="job">
+  <a class="title" href="https://jumpit.saramin.co.kr/position/55439058" target="_blank" rel="noopener">AI Artist / LLM Engineer(3~5년)</a>
+  <div class="meta">
+    <span>블루개러지</span>
+    <span>서울 강동구</span>
+    <span class="badge">3년</span>
+    <span class="badge src-점핏">점핏</span>
+    <span class="deadline">~ 2026-11-28</span>
+  </div>
+  <div class="chips"><span class="chip">Pandas</span><span class="chip">PostgreSQL</span><span class="chip">Python</span><span class="chip">PyTorch</span></div>
+</article><article class="job">
+  <a class="title" href="https://www.jobkorea.co.kr/Recruit/GI_Read/50265569" target="_blank" rel="noopener">Physical AI 모델 최적화 및 실증 엔지니어(AI교육 사업 수료자 대상)</a>
+  <div class="meta">
+    <span>서큘러스</span>
+    <span>서울 금천구</span>
+    <span class="badge">신입</span>
+    <span class="badge src-잡코리아">잡코리아</span>
+    <span class="deadline">~ 2026-11-28</span>
+  </div>
+  
+</article><article class="job">
+  <a class="title" href="https://jumpit.saramin.co.kr/position/55436276" target="_blank" rel="noopener">AI 엔지니어 (경력)</a>
+  <div class="meta">
+    <span>수퍼빈</span>
+    <span>경기 성남시</span>
+    <span class="badge">3년</span>
+    <span class="badge src-점핏">점핏</span>
+    <span class="deadline">~ 2026-11-28</span>
+  </div>
+  <div class="chips"><span class="chip">NumPy</span><span class="chip">Pandas</span><span class="chip">Python</span><span class="chip">PyTorch</span><span class="chip">TensorFlow</span><span class="chip">DeepLearning</span><span class="chip">MachineLearning</span><span class="chip">SQL</span></div>
+</article><article class="job">
+  <a class="title" href="https://www.jobkorea.co.kr/Recruit/GI_Read/50238774" target="_blank" rel="noopener">[HDC랩스] AI LAB팀 AI엔지니어(로봇) 및 AI에이전트, 연구보조원 채용</a>
+  <div class="meta">
+    <span>에이치디씨랩스㈜</span>
+    <span>서울 서초구</span>
+    <span class="badge">신입·5년</span>
+    <span class="badge src-잡코리아">잡코리아</span>
+    <span class="deadline">~ 2026-11-15</span>
+  </div>
+  <div class="chips"><span class="chip">PyTorch</span><span class="chip">Python</span></div>
+</article><article class="job">
+  <a class="title" href="https://www.jobkorea.co.kr/Recruit/GI_Read/50268843" target="_blank" rel="noopener">AI Engineer VLM / LLM</a>
+  <div class="meta">
+    <span>이한크리에이티브㈜</span>
+    <span>경기 과천시</span>
+    <span class="badge">신입·1년</span>
+    <span class="badge src-잡코리아">잡코리아</span>
+    <span class="deadline">~ 2026-11-29</span>
+  </div>
+  
+</article><article class="job">
+  <a class="title" href="https://www.jobkorea.co.kr/Recruit/GI_Read/50244561" target="_blank" rel="noopener">GenOS AI Engineer (전환형인턴)</a>
+  <div class="meta">
+    <span>㈜제논</span>
+    <span>서울 강남구</span>
+    <span class="badge">신입</span>
+    <span class="badge src-잡코리아">잡코리아</span>
+    <span class="deadline">~ 2026-12-25</span>
+  </div>
+  
+</article><article class="job">
+  <a class="title" href="https://www.jobkorea.co.kr/Recruit/GI_Read/49965382" target="_blank" rel="noopener">[국내1위 포렌식SW] AI 엔지니어 담당 정규직 채용(신입/경력)</a>
+  <div class="meta">
+    <span>㈜지엠디소프트</span>
+    <span>경기 성남시</span>
+    <span class="badge">신입·1년</span>
+    <span class="badge src-잡코리아">잡코리아</span>
+    <span class="deadline">~ 2026-11-09</span>
+  </div>
+  <div class="chips"><span class="chip">Python</span></div>
+</article>
+</section>
+    <section><h2>대기업 공채 (4)</h2>
+<article class="job">
+  <a class="title" href="https://www.jobkorea.co.kr/Recruit/GI_Read/50228443" target="_blank" rel="noopener">2026년 (주)농심 신입 채용</a>
+  <div class="meta">
+    <span>㈜농심</span>
+    <span>서울 동작구 외 11</span>
+    <span class="badge">신입</span>
+    <span class="badge src-잡코리아">잡코리아</span>
+    <span class="deadline">~ 2026-11-09</span>
+  </div>
+  
+</article><article class="job">
+  <a class="title" href="https://www.jobkorea.co.kr/Recruit/GI_Read/50262007" target="_blank" rel="noopener">[LG CNS 자회사] 26년 하반기 신입 인턴 채용(전환형)</a>
+  <div class="meta">
+    <span>㈜비즈테크아이</span>
+    <span>서울 마포구 외 5</span>
+    <span class="badge">신입</span>
+    <span class="badge src-잡코리아">잡코리아</span>
+    <span class="deadline">~ 2026-11-15</span>
+  </div>
+  
+</article><article class="job">
+  <a class="title" href="https://www.jobkorea.co.kr/Recruit/GI_Read/50068950" target="_blank" rel="noopener">2026년 하반기 아이센스 신입/경력 대규모 채용</a>
+  <div class="meta">
+    <span>㈜아이센스</span>
+    <span>서울 서초구 외 3</span>
+    <span class="badge">신입·1년</span>
+    <span class="badge src-잡코리아">잡코리아</span>
+    <span class="deadline">~ 2026-11-11</span>
+  </div>
+  <div class="chips"><span class="chip">RDBMS</span><span class="chip">C</span><span class="chip">AWS</span><span class="chip">C#</span><span class="chip">CI</span><span class="chip">Python</span><span class="chip">MySQL</span><span class="chip">PostgreSQL</span><span class="chip">의공</span><span class="chip">rca</span><span class="chip">NoSQL</span><span class="chip">golang</span></div>
+</article><article class="job">
+  <a class="title" href="https://www.jobkorea.co.kr/Recruit/GI_Read/50160960" target="_blank" rel="noopener">펜타시스템 40기 신입사원 공개채용</a>
+  <div class="meta">
+    <span>펜타시스템테크놀러지㈜</span>
+    <span>서울 영등포구</span>
+    <span class="badge">신입</span>
+    <span class="badge src-잡코리아">잡코리아</span>
+    <span class="deadline">~ 2026-11-02</span>
+  </div>
+  
+</article>
+</section>
+
+    <footer>
+      <p>출처: 점핏(최근 등록순 3페이지) · 잡코리아(신입 필터 검색 4건: 백엔드/프론트엔드/풀스택/AI 엔지니어)</p>
+      <p>수집 시각: 2026-10-31 08:06 KST · 차단·미시도 소스: 원티드·프로그래머스: 403 차단으로 미시도</p>
+      <p><a href="./index.html">전체 아카이브</a></p>
+    </footer>
+  </div>
+</body>
+</html>
